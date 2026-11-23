@@ -11,6 +11,38 @@ type BidState = 'form' | 'pending' | 'accepted' | 'error';
 const startPrice = 18_400_000;
 const increment = 100_000;
 const currentPrice = 18_800_000;
+const apartmentImages = [
+  '/images/apartment-1.webp',
+  '/images/apartment-2.webp',
+  '/images/apartment-3.webp',
+  '/images/apartment-4.webp',
+];
+
+function ListingGallery({ finished = false }: { finished?: boolean }) {
+  return (
+    <div className={s.listingGallery}>
+      <div
+        className={s.listingImageTrack}
+        aria-label="Фотографии квартиры"
+        aria-roledescription="галерея"
+        tabIndex={0}
+      >
+        {apartmentImages.map((src, index) => (
+          <figure key={src}>
+            <img src={src} alt={`Квартира, фото ${index + 1}`} />
+          </figure>
+        ))}
+      </div>
+      <span className={s.photoCounter}>{apartmentImages.length} фото</span>
+      <Badge tone={finished ? 'neutral' : 'main'}>{finished ? 'Аукцион завершён' : 'Аукцион'}</Badge>
+      {!finished && (
+        <button type="button" aria-label="Добавить в избранное">
+          ♡
+        </button>
+      )}
+    </div>
+  );
+}
 
 function AuctionSummary({ compact = false }: { compact?: boolean }) {
   return (
@@ -192,10 +224,7 @@ function BuyerFlow({
   if (finished) {
     return (
       <section className={s.buyerContent}>
-        <div className={s.listingImage}>
-          <img src="/images/apartment-1.webp" alt="Интерьер квартиры" />
-          <Badge tone="neutral">Аукцион завершён</Badge>
-        </div>
+        <ListingGallery finished />
         <h1>2-комн. квартира, 54 м²</h1>
         <p className={s.address}>Москва, Сокольники, ул. Русаковская, 12</p>
         <section className={s.finishedCard}>
@@ -211,13 +240,7 @@ function BuyerFlow({
   }
   return (
     <section className={s.buyerContent}>
-      <div className={s.listingImage}>
-        <img src="/images/apartment-1.webp" alt="Интерьер квартиры" />
-        <Badge tone="main">Аукцион</Badge>
-        <button type="button" aria-label="Добавить в избранное">
-          ♡
-        </button>
-      </div>
+      <ListingGallery />
       <h1>2-комн. квартира, 54 м²</h1>
       <p className={s.address}>Москва, Сокольники, ул. Русаковская, 12 · 7 минут пешком</p>
       <AuctionSummary />

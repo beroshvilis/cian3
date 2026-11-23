@@ -37,4 +37,11 @@ describe('Auction scenario', () => {
     open('/auction?role=buyer&state=finished');
     expect(screen.getByText(/Победила ставка/)).toBeVisible();
   });
+
+  it('shows four photos in a horizontally scrollable buyer gallery', () => {
+    open('/auction?role=buyer');
+    expect(screen.getByLabelText('Фотографии квартиры')).toBeVisible();
+    expect(screen.getAllByRole('img', { name: /Квартира, фото/ })).toHaveLength(4);
+    expect(screen.getByText('4 фото')).toBeVisible();
+  });
 });
