@@ -45,6 +45,15 @@ describe('Auction scenario', () => {
     expect(screen.getByText('4 фото')).toBeVisible();
   });
 
+  it('animates the favorite control when a buyer saves the listing', async () => {
+    open('/auction?role=buyer');
+    await userEvent.click(screen.getByRole('button', { name: 'Добавить в избранное' }));
+    expect(screen.getByRole('button', { name: 'Убрать из избранного' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+  });
+
   it('keeps the auction flow free of the common site header and footer', () => {
     open();
     expect(screen.queryByRole('banner')).not.toBeInTheDocument();

@@ -18,6 +18,7 @@ const apartmentImages = [
 ];
 
 function ListingGallery({ finished = false }: { finished?: boolean }) {
+  const [favorite, setFavorite] = useState(false);
   return (
     <div className={s.listingGallery}>
       <div
@@ -35,8 +36,14 @@ function ListingGallery({ finished = false }: { finished?: boolean }) {
       <span className={s.photoCounter}>{apartmentImages.length} фото</span>
       <Badge tone={finished ? 'neutral' : 'main'}>{finished ? 'Аукцион завершён' : 'Аукцион'}</Badge>
       {!finished && (
-        <button type="button" aria-label="Добавить в избранное">
-          ♡
+        <button
+          type="button"
+          className={`${s.favoriteButton} ${favorite ? s.favoriteActive : ''}`}
+          aria-label={favorite ? 'Убрать из избранного' : 'Добавить в избранное'}
+          aria-pressed={favorite}
+          onClick={() => setFavorite((value) => !value)}
+        >
+          <span aria-hidden="true">{favorite ? '♥' : '♡'}</span>
         </button>
       )}
     </div>

@@ -218,7 +218,7 @@
   color: white;
   font-size: 12px;
 }
-.listingGallery > button {
+.favoriteButton {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -230,6 +230,25 @@
   font-size: 24px;
   line-height: 1;
   cursor: pointer;
+}
+.favoriteButton.favoriteActive {
+  background: var(--background-primary);
+  color: var(--text-negative-default);
+  animation: favoritePulse 460ms ease-out;
+}
+@keyframes favoritePulse {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.24);
+  }
+  70% {
+    transform: scale(0.94);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 .buyerContent > h1 {
   font-size: 24px;
