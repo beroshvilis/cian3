@@ -1,0 +1,402 @@
+.page {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 32px 20px 56px;
+}
+.mobileShell {
+  width: min(100%, 440px);
+  margin: 20px auto 0;
+  border: 1px solid var(--stroke-divider-default);
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--background-primary);
+  box-shadow: 0 12px 40px #0d162e12;
+}
+.roleSwitch {
+  max-width: 440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--text-secondary-default);
+}
+.roleButtons {
+  display: flex;
+  padding: 3px;
+  background: var(--background-secondary);
+  border-radius: 10px;
+}
+.roleButtons button {
+  border: 0;
+  padding: 8px 12px;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-secondary-default);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.roleButtons .roleActive {
+  color: var(--text-primary-default);
+  background: var(--background-primary);
+  box-shadow: 0 1px 3px #0d162e20;
+}
+.sellerContent,
+.buyerContent {
+  padding: 24px 20px 28px;
+}
+.flowIntro {
+  display: grid;
+  gap: 12px;
+}
+.flowIntro h1,
+.buyerContent h1,
+.successHero h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 34px;
+  letter-spacing: -0.5px;
+}
+.flowIntro p,
+.successHero p {
+  margin: 0;
+  color: var(--text-secondary-default);
+  font-size: 14px;
+  line-height: 20px;
+}
+.progress {
+  display: grid;
+  grid-template-columns: 24px 1fr 24px;
+  align-items: center;
+  gap: 8px;
+  margin: 28px 0 24px;
+  color: var(--text-secondary-default);
+}
+.progress span {
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--stroke-border-default);
+  border-radius: 50%;
+  text-align: center;
+  line-height: 22px;
+  font-size: 12px;
+}
+.progress i {
+  height: 2px;
+  background: var(--stroke-divider-default);
+}
+.progress small {
+  grid-column: 1 / -1;
+  font-size: 12px;
+}
+.progress .progressDone {
+  background: var(--control-main-primary-default);
+  color: var(--text-on-bright-default);
+  border-color: var(--control-main-primary-default);
+}
+.form,
+.review {
+  display: grid;
+  gap: 20px;
+}
+.review > .button {
+  margin-top: 4px;
+}
+.notice {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px;
+  border-radius: 10px;
+  background: var(--surface-main-default);
+  color: var(--text-secondary-default);
+  font-size: 12px;
+  line-height: 18px;
+}
+.notice strong {
+  color: var(--text-primary-default);
+  font-size: 14px;
+}
+.flatMini {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--stroke-divider-default);
+}
+.flatMini img {
+  width: 72px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.flatMini div {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+}
+.flatMini span {
+  color: var(--text-secondary-default);
+  font-size: 12px;
+}
+.review dl {
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+.review dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 14px;
+}
+.review dt {
+  color: var(--text-secondary-default);
+}
+.review dd {
+  margin: 0;
+  font-weight: 700;
+  text-align: right;
+}
+.successHero {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 12px 0 28px;
+}
+.successHero p {
+  max-width: 330px;
+}
+.successMark {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--surface-positive-default);
+  color: var(--text-positive-default);
+  font-weight: 700;
+  font-size: 22px;
+}
+.infoCard {
+  margin: 20px 0;
+  padding: 16px;
+  background: var(--background-secondary);
+  border-radius: 12px;
+}
+.infoCard h2,
+.bidBox h2,
+.rules h2,
+.finishedCard h2 {
+  font-size: 18px;
+  line-height: 24px;
+  margin: 0 0 8px;
+}
+.infoCard p,
+.bidBox p,
+.rules li,
+.finishedCard p {
+  color: var(--text-secondary-default);
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0;
+}
+.listingImage {
+  position: relative;
+  height: 230px;
+  margin: -24px -20px 20px;
+}
+.listingImage > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.listingImage > span {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
+.listingImage > button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: #fffd;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+.buyerContent > h1 {
+  font-size: 24px;
+  line-height: 30px;
+}
+.address {
+  color: var(--text-secondary-default);
+  font-size: 14px;
+  line-height: 20px;
+  margin: 8px 0 20px;
+}
+.summary,
+.summaryCompact {
+  display: grid;
+  gap: 16px;
+  border: 1px solid var(--stroke-border-default);
+  border-radius: 12px;
+  padding: 16px;
+}
+.summary {
+  margin: 0 0 20px;
+}
+.summaryTop,
+.priceRow,
+.auctionFacts {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary-default);
+  font-size: 12px;
+}
+.live i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-positive-default);
+}
+.priceRow > div {
+  display: grid;
+  gap: 4px;
+}
+.priceRow span {
+  color: var(--text-secondary-default);
+  font-size: 12px;
+}
+.priceRow strong {
+  font-size: 22px;
+  line-height: 28px;
+}
+.priceRow .bidsCount {
+  text-align: right;
+}
+.priceRow .bidsCount strong {
+  font-size: 16px;
+}
+.auctionFacts {
+  padding-top: 14px;
+  border-top: 1px solid var(--stroke-divider-default);
+  font-size: 12px;
+  color: var(--text-secondary-default);
+}
+.auctionFacts b {
+  display: block;
+  color: var(--text-primary-default);
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+.bidBox,
+.accepted,
+.finishedCard {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--background-secondary);
+}
+.bidBox .field {
+  margin-top: 2px;
+}
+.accepted {
+  background: var(--surface-positive-default);
+}
+.accepted h2 {
+  font-size: 18px;
+  margin: 0;
+}
+.accepted p {
+  font-size: 14px;
+  margin: 0;
+  color: var(--text-secondary-default);
+}
+.accepted .successMark {
+  width: 32px;
+  height: 32px;
+  font-size: 16px;
+}
+.errorDemo {
+  justify-self: center;
+  border: 0;
+  background: none;
+  color: var(--text-secondary-default);
+  text-decoration: underline;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.rules {
+  padding: 24px 0 0;
+}
+.rules ol {
+  display: grid;
+  gap: 10px;
+  padding-left: 20px;
+  margin: 12px 0 0;
+}
+.textLink {
+  display: inline-block;
+  margin-top: 24px;
+  color: var(--text-main-default);
+  font-size: 14px;
+  font-weight: 700;
+}
+.finishedCard {
+  margin-top: 20px;
+}
+.demoNote {
+  max-width: 440px;
+  margin: 20px auto 0;
+  text-align: center;
+  color: var(--text-secondary-default);
+  font-size: 12px;
+  line-height: 18px;
+}
+@media (min-width: 761px) {
+  .mobileShell {
+    min-height: 660px;
+  }
+  .page {
+    padding-top: 48px;
+  }
+}
+@media (max-width: 420px) {
+  .page {
+    padding: 20px 0 36px;
+  }
+  .mobileShell {
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+  .roleSwitch {
+    padding: 0 16px;
+  }
+  .sellerContent,
+  .buyerContent {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .listingImage {
+    margin-left: -16px;
+    margin-right: -16px;
+  }
+}

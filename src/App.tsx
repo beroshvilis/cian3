@@ -10,6 +10,7 @@ import {
   PatternsPage,
   NotFoundPage,
 } from './pages/PrototypePages';
+import { AuctionPage } from './pages/AuctionPage';
 export default function App() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/listing/:id" element={<DetailPage />} />
+        <Route path="/auction" element={<AuctionPage />} />
         <Route path="/ui" element={<UIKitPage prototype />} />
         <Route path="/guide" element={<GuidePage />} />
         <Route path="/patterns" element={<PatternsPage />} />

@@ -391,6 +391,7 @@ export function PatternsPage() {
             <Link to="/search?state=empty">Пустые данные</Link>
             <Link to="/search?state=error">Ошибка и повторная попытка</Link>
             <Link to="/listing/unknown">Неизвестное объявление</Link>
+            <Link to="/auction">Аукцион: продавец и покупатель</Link>
           </div>
         </div>
       </PageLayout>
