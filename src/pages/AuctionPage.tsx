@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Badge, Button, Icon, Input } from '@/ui';
 import { money } from '@/data/listings';
+import { auctionGoals, reachAuctionGoal } from '@/metrica';
 import s from './AuctionPage.module.css';
 
 type SellerStep = 'form' | 'review' | 'published';
@@ -90,12 +91,31 @@ function AuctionSummary({ compact = false }: { compact?: boolean }) {
   );
 }
 
-function SellerFlow({ onSwitch }: { onSwitch: () => void }) {
-  const [step, setStep] = useState<SellerStep>('form');
+function SellerFlow({
+  initialStep,
+  onStepChange,
+  onSwitch,
+}: {
+  initialStep: SellerStep;
+  onStepChange: (step: SellerStep) => void;
+  onSwitch: () => void;
+}) {
+  const [step, setStep] = useState<SellerStep>(initialStep);
   const [price, setPrice] = useState(String(startPrice));
   const [bidStep, setBidStep] = useState(String(increment));
   const [endDate, setEndDate] = useState('24 ноября, 18:00');
   const canReview = Number(price) > 0 && Number(bidStep) > 0 && Boolean(endDate.trim());
+
+  const changeStep = (next: SellerStep) => {
+    setStep(next);
+    onStepChange(next);
+  };
+
+  useEffect(() => {
+    if (step === 'review') {
+      reachAuctionGoal(auctionGoals.sellerTermsReviewed, { role: 'seller', step: 'review' });
+    }
+  }, [step]);
 
   if (step === 'published') {
     return (
@@ -140,7 +160,10 @@ function SellerFlow({ onSwitch }: { onSwitch: () => void }) {
           className={s.form}
           onSubmit={(event) => {
             event.preventDefault();
-            if (canReview) setStep('review');
+            if (canReview) {
+              reachAuctionGoal(auctionGoals.sellerTermsSubmitted, { role: 'seller', step: 'terms' });
+              changeStep('review');
+            }
           }}
         >
           <Input
@@ -201,10 +224,16 @@ function SellerFlow({ onSwitch }: { onSwitch: () => void }) {
             <strong>Проверьте внимательно</strong>
             <span>После публикации изменить цену и срок не получится.</span>
           </section>
-          <Button fullWidth onClick={() => setStep('published')}>
+          <Button
+            fullWidth
+            onClick={() => {
+              reachAuctionGoal(auctionGoals.sellerPublished, { role: 'seller', step: 'published' });
+              changeStep('published');
+            }}
+          >
             Опубликовать аукцион
           </Button>
-          <Button fullWidth theme="main_secondary" onClick={() => setStep('form')}>
+          <Button fullWidth theme="main_secondary" onClick={() => changeStep('form')}>
             Изменить условия
           </Button>
         </section>
@@ -221,19 +250,31 @@ function BuyerFlow({
   onStateChange: (state: string | null) => void;
 }) {
   const [bid, setBid] = useState(String(currentPrice + increment));
-  const [bidState, setBidState] = useState<BidState>(state === 'error' ? 'error' : 'form');
+  const [bidState, setBidState] = useState<BidState>(
+    state === 'error' || state === 'pending' || state === 'accepted' ? state : 'form',
+  );
   const [lowBid, setLowBid] = useState(state === 'low');
   const finished = state === 'finished';
   const minimum = currentPrice + increment;
   const submit = () => {
     if (Number(bid) < minimum) {
       setLowBid(true);
+      reachAuctionGoal(auctionGoals.bidValidationError, { role: 'buyer', step: 'bid_form' });
       return;
     }
     setLowBid(false);
+    reachAuctionGoal(auctionGoals.bidSubmitted, { role: 'buyer', step: 'bid_pending' });
     setBidState('pending');
-    window.setTimeout(() => setBidState('accepted'), 850);
   };
+
+  useEffect(() => {
+    if (bidState !== 'pending' || state === 'pending') return;
+    const timer = window.setTimeout(() => {
+      setBidState('accepted');
+      reachAuctionGoal(auctionGoals.bidAccepted, { role: 'buyer', step: 'bid_accepted' });
+    }, 850);
+    return () => window.clearTimeout(timer);
+  }, [bidState, state]);
   if (finished) {
     return (
       <section className={s.buyerFlow}>
@@ -319,6 +360,7 @@ function BuyerFlow({
               type="button"
               onClick={() => {
                 setBidState('error');
+                reachAuctionGoal(auctionGoals.bidResponseError, { role: 'buyer', step: 'bid_error' });
                 onStateChange('error');
               }}
             >
@@ -368,18 +410,39 @@ export function AuctionPage() {
   const [params, setParams] = useSearchParams();
   const role = params.get('role') === 'buyer' ? 'buyer' : 'seller';
   const state = params.get('state');
+  const requestedSellerStep = params.get('step');
+  const sellerStep: SellerStep =
+    requestedSellerStep === 'review' || requestedSellerStep === 'published'
+      ? requestedSellerStep
+      : 'form';
   const changeState = (next: string | null) => {
     const value: Record<string, string> = { role: 'buyer' };
     if (next) value.state = next;
     setParams(value);
   };
+  const changeSellerStep = (next: SellerStep) => {
+    setParams(next === 'form' ? {} : { role: 'seller', step: next });
+  };
+  useEffect(() => {
+    if (role !== 'buyer') return;
+    if (state === 'finished') {
+      reachAuctionGoal(auctionGoals.auctionFinishedViewed, { role: 'buyer', step: 'finished' });
+    } else if (!state || state === 'low') {
+      reachAuctionGoal(auctionGoals.buyerCardViewed, { role: 'buyer', step: 'listing' });
+    }
+  }, [role, state]);
   return (
     <main id="main" className={s.page}>
       <div className={s.mobileShell}>
         {role === 'seller' ? (
-          <SellerFlow onSwitch={() => setParams({ role: 'buyer' })} />
+          <SellerFlow
+            key={sellerStep}
+            initialStep={sellerStep}
+            onStepChange={changeSellerStep}
+            onSwitch={() => setParams({ role: 'buyer' })}
+          />
         ) : (
-          <BuyerFlow state={state} onStateChange={changeState} />
+          <BuyerFlow key={state} state={state} onStateChange={changeState} />
         )}
       </div>
       <p className={s.demoNote}>
