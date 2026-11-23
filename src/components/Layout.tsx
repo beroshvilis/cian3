@@ -103,6 +103,13 @@ export function Header() {
             </button>
           ),
         )}
+        <Link
+          to="/auction"
+          className={location.pathname.startsWith('/auction') ? s.active : undefined}
+          onClick={() => setMenu(false)}
+        >
+          Аукцион
+        </Link>
         <Link to="/ui" className={s.kitLink} onClick={() => setMenu(false)}>
           UI kit ↗
         </Link>
