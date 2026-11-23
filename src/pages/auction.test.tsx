@@ -45,6 +45,14 @@ describe('Auction scenario', () => {
     expect(screen.getByText('4 фото')).toBeVisible();
   });
 
+  it('explains the next bid, deadline, and auction steps to a buyer', () => {
+    open('/auction?role=buyer');
+    expect(screen.getByText(/Следующую ставку можно сделать от/)).toBeVisible();
+    expect(screen.getByText('Приём ставок', { exact: true })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Как устроен аукцион' })).toBeVisible();
+    expect(screen.getByText('Дождитесь итогов')).toBeVisible();
+  });
+
   it('animates the favorite control when a buyer saves the listing', async () => {
     open('/auction?role=buyer');
     await userEvent.click(screen.getByRole('button', { name: 'Добавить в избранное' }));

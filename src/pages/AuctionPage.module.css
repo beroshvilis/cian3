@@ -16,6 +16,9 @@
 .buyerContent {
   padding: 24px 20px 28px;
 }
+.buyerFlow {
+  display: grid;
+}
 .flowIntro {
   display: grid;
   gap: 12px;
@@ -175,7 +178,7 @@
 }
 .listingGallery {
   position: relative;
-  margin: -24px -20px 20px;
+  border-bottom: 1px solid var(--stroke-divider-default);
 }
 .listingImageTrack {
   display: flex;
@@ -315,11 +318,30 @@
 .priceRow .bidsCount strong {
   font-size: 16px;
 }
+.nextBid {
+  margin: -4px 0 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--background-secondary);
+  color: var(--text-secondary-default);
+  font-size: 12px;
+  line-height: 18px;
+}
+.nextBid strong {
+  color: var(--text-primary-default);
+}
 .auctionFacts {
   padding-top: 14px;
   border-top: 1px solid var(--stroke-divider-default);
   font-size: 12px;
   color: var(--text-secondary-default);
+}
+.auctionFacts > div {
+  display: grid;
+  gap: 3px;
+}
+.auctionFacts > div:last-child {
+  text-align: right;
 }
 .auctionFacts b {
   display: block;
@@ -463,9 +485,41 @@
 }
 .rules ol {
   display: grid;
-  gap: 10px;
-  padding-left: 20px;
+  gap: 12px;
+  padding: 0;
   margin: 12px 0 0;
+  list-style: none;
+}
+.rules li {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+.rules li > span {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--background-secondary);
+  color: var(--text-main-default);
+  font-size: 13px;
+  font-weight: 700;
+}
+.rules li > div {
+  display: grid;
+  gap: 3px;
+}
+.rules li strong {
+  font-size: 14px;
+  line-height: 20px;
+}
+.rules li p {
+  margin: 0;
+  color: var(--text-secondary-default);
+  font-size: 13px;
+  line-height: 18px;
 }
 .textLink {
   display: inline-block;
@@ -515,9 +569,5 @@
   .buyerContent {
     padding-left: 16px;
     padding-right: 16px;
-  }
-  .listingGallery {
-    margin-left: -16px;
-    margin-right: -16px;
   }
 }
