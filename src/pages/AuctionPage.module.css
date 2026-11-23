@@ -16,6 +16,9 @@
 .buyerContent {
   padding: 24px 20px 28px;
 }
+.buyerFlow {
+  display: grid;
+}
 .flowIntro {
   display: grid;
   gap: 12px;
@@ -175,7 +178,7 @@
 }
 .listingGallery {
   position: relative;
-  margin: -24px -20px 20px;
+  border-bottom: 1px solid var(--stroke-divider-default);
 }
 .listingImageTrack {
   display: flex;
@@ -566,9 +569,5 @@
   .buyerContent {
     padding-left: 16px;
     padding-right: 16px;
-  }
-  .listingGallery {
-    margin-left: -16px;
-    margin-right: -16px;
   }
 }

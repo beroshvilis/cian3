@@ -236,126 +236,130 @@ function BuyerFlow({
   };
   if (finished) {
     return (
-      <section className={s.buyerContent}>
+      <section className={s.buyerFlow}>
         <ListingGallery finished />
-        <h1>2-комн. квартира, 54 м²</h1>
-        <p className={s.address}>Москва, Сокольники, ул. Русаковская, 12</p>
-        <section className={s.finishedCard}>
-          <Badge tone="positive">Аукцион завершён</Badge>
-          <h2>Победила ставка {money(currentPrice)}</h2>
-          <p>Продавец выбирает покупателя. Мы сообщим, если он выберет вас.</p>
-        </section>
-        <Link className={s.textLink} to="/auction?role=buyer" onClick={() => onStateChange(null)}>
-          Вернуться к активному аукциону
-        </Link>
+        <div className={s.buyerContent}>
+          <h1>2-комн. квартира, 54 м²</h1>
+          <p className={s.address}>Москва, Сокольники, ул. Русаковская, 12</p>
+          <section className={s.finishedCard}>
+            <Badge tone="positive">Аукцион завершён</Badge>
+            <h2>Победила ставка {money(currentPrice)}</h2>
+            <p>Продавец выбирает покупателя. Мы сообщим, если он выберет вас.</p>
+          </section>
+          <Link className={s.textLink} to="/auction?role=buyer" onClick={() => onStateChange(null)}>
+            Вернуться к активному аукциону
+          </Link>
+        </div>
       </section>
     );
   }
   return (
-    <section className={s.buyerContent}>
+    <section className={s.buyerFlow}>
       <ListingGallery />
-      <h1>2-комн. квартира, 54 м²</h1>
-      <p className={s.address}>Москва, Сокольники, ул. Русаковская, 12 · 7 минут пешком</p>
-      <AuctionSummary />
-      {bidState === 'accepted' ? (
-        <section className={s.accepted} role="status">
-          <span className={s.successMark}>✓</span>
-          <h2>Ваша ставка принята</h2>
-          <p>Ставка {money(Number(bid))} сейчас лидирует. Мы сообщим, если её перебьют.</p>
-          <Button
-            fullWidth
-            theme="main_secondary"
-            onClick={() => {
-              setBidState('form');
-              setBid(String(Number(bid) + increment));
-            }}
-          >
-            Повысить ставку
-          </Button>
-        </section>
-      ) : bidState === 'error' ? (
-        <section className={s.bidBox} role="alert">
-          <Badge tone="negative">Не удалось отправить ставку</Badge>
-          <h2>Проверьте соединение</h2>
-          <p>Условия аукциона не изменились. Попробуйте ещё раз.</p>
-          <Button
-            fullWidth
-            onClick={() => {
-              setBidState('form');
-              onStateChange(null);
-            }}
-          >
-            Попробовать снова
-          </Button>
-        </section>
-      ) : (
-        <section className={s.bidBox}>
-          <h2>Сделать ставку</h2>
-          <p>Минимальная ставка — {money(minimum)}</p>
-          <Input
-            label="Ваша ставка, ₽"
-            inputMode="numeric"
-            value={bid}
-            onChange={(e) => {
-              setBid(e.target.value.replace(/\D/g, ''));
-              setLowBid(false);
-            }}
-            error={lowBid ? `Ставка должна быть не ниже ${money(minimum)}` : undefined}
-          />
-          {bidState === 'pending' ? (
-            <Button fullWidth loading>
-              Отправляем ставку
+      <div className={s.buyerContent}>
+        <h1>2-комн. квартира, 54 м²</h1>
+        <p className={s.address}>Москва, Сокольники, ул. Русаковская, 12 · 7 минут пешком</p>
+        <AuctionSummary />
+        {bidState === 'accepted' ? (
+          <section className={s.accepted} role="status">
+            <span className={s.successMark}>✓</span>
+            <h2>Ваша ставка принята</h2>
+            <p>Ставка {money(Number(bid))} сейчас лидирует. Мы сообщим, если её перебьют.</p>
+            <Button
+              fullWidth
+              theme="main_secondary"
+              onClick={() => {
+                setBidState('form');
+                setBid(String(Number(bid) + increment));
+              }}
+            >
+              Повысить ставку
             </Button>
-          ) : (
-            <Button fullWidth onClick={submit}>
-              Сделать ставку
+          </section>
+        ) : bidState === 'error' ? (
+          <section className={s.bidBox} role="alert">
+            <Badge tone="negative">Не удалось отправить ставку</Badge>
+            <h2>Проверьте соединение</h2>
+            <p>Условия аукциона не изменились. Попробуйте ещё раз.</p>
+            <Button
+              fullWidth
+              onClick={() => {
+                setBidState('form');
+                onStateChange(null);
+              }}
+            >
+              Попробовать снова
             </Button>
-          )}
-          <button
-            className={s.errorDemo}
-            type="button"
-            onClick={() => {
-              setBidState('error');
-              onStateChange('error');
-            }}
-          >
-            Показать ошибку ответа
-          </button>
+          </section>
+        ) : (
+          <section className={s.bidBox}>
+            <h2>Сделать ставку</h2>
+            <p>Минимальная ставка — {money(minimum)}</p>
+            <Input
+              label="Ваша ставка, ₽"
+              inputMode="numeric"
+              value={bid}
+              onChange={(e) => {
+                setBid(e.target.value.replace(/\D/g, ''));
+                setLowBid(false);
+              }}
+              error={lowBid ? `Ставка должна быть не ниже ${money(minimum)}` : undefined}
+            />
+            {bidState === 'pending' ? (
+              <Button fullWidth loading>
+                Отправляем ставку
+              </Button>
+            ) : (
+              <Button fullWidth onClick={submit}>
+                Сделать ставку
+              </Button>
+            )}
+            <button
+              className={s.errorDemo}
+              type="button"
+              onClick={() => {
+                setBidState('error');
+                onStateChange('error');
+              }}
+            >
+              Показать ошибку ответа
+            </button>
+          </section>
+        )}
+        <section className={s.rules}>
+          <h2>Как устроен аукцион</h2>
+          <ol>
+            <li>
+              <span>1</span>
+              <div>
+                <strong>Сделайте ставку</strong>
+                <p>Не ниже {money(minimum)}. Её увидите вы и продавец.</p>
+              </div>
+            </li>
+            <li>
+              <span>2</span>
+              <div>
+                <strong>Следите за ходом аукциона</strong>
+                <p>Если вашу ставку перебьют, мы отправим уведомление.</p>
+              </div>
+            </li>
+            <li>
+              <span>3</span>
+              <div>
+                <strong>Дождитесь итогов</strong>
+                <p>Завтра в 18:00 приём ставок закончится, и продавец выберет покупателя.</p>
+              </div>
+            </li>
+          </ol>
         </section>
-      )}
-      <section className={s.rules}>
-        <h2>Как устроен аукцион</h2>
-        <ol>
-          <li>
-            <span>1</span>
-            <div>
-              <strong>Сделайте ставку</strong>
-              <p>Не ниже {money(minimum)}. Её увидите вы и продавец.</p>
-            </div>
-          </li>
-          <li>
-            <span>2</span>
-            <div>
-              <strong>Следите за ходом аукциона</strong>
-              <p>Если вашу ставку перебьют, мы отправим уведомление.</p>
-            </div>
-          </li>
-          <li>
-            <span>3</span>
-            <div>
-              <strong>Дождитесь итогов</strong>
-              <p>Завтра в 18:00 приём ставок закончится, и продавец выберет покупателя.</p>
-            </div>
-          </li>
-        </ol>
-      </section>
-      <Link
-        className={s.textLink}
-        to="/auction?role=buyer&state=finished"
-        onClick={() => onStateChange('finished')}
-      >
-        Посмотреть состояние завершённого аукциона
-      </Link>
+        <Link
+          className={s.textLink}
+          to="/auction?role=buyer&state=finished"
+          onClick={() => onStateChange('finished')}
+        >
+          Посмотреть состояние завершённого аукциона
+        </Link>
+      </div>
     </section>
   );
 }
