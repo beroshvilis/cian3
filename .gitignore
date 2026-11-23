@@ -7,3 +7,5 @@ coverage/
 .env.*
 !.env.example
 *.tsbuildinfo
+motion/**/build/
+motion/**/out/*.mp4
