@@ -156,6 +156,7 @@ export function Input({
           kitClass(wrapper, 'input-wrapper', !!error && 'invalid', disabled && 'disabled'),
           kitClass(sizing, 'input-wrapper'),
           s.fieldControl,
+          error && s.fieldControlError,
         )}
       >
         {leadingIcon && <Icon name={leadingIcon} />}

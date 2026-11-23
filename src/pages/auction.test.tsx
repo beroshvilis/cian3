@@ -25,6 +25,15 @@ describe('Auction scenario', () => {
     expect(screen.getByRole('heading', { name: '2-комн. квартира, 54 м²' })).toBeVisible();
   });
 
+  it('switches auction roles from the separate preview panel', async () => {
+    open();
+    const switcher = screen.getByRole('region', { name: 'Переключатель сценария' });
+    expect(switcher).toHaveTextContent('Панель предпросмотра');
+    await userEvent.click(screen.getByRole('button', { name: 'Покупатель' }));
+    expect(screen.getByRole('heading', { name: '2-комн. квартира, 54 м²' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Покупатель' })).toHaveAttribute('aria-pressed', 'true');
+  });
+
   it('validates a low bid and exposes completion and response-error states', async () => {
     open('/auction?role=buyer');
     const bid = screen.getByLabelText('Ваша ставка, ₽');
@@ -45,12 +54,20 @@ describe('Auction scenario', () => {
     expect(screen.getByText('4 фото')).toBeVisible();
   });
 
-  it('explains the next bid, deadline, and auction steps to a buyer', () => {
+  it('expands auction format details for a buyer', async () => {
     open('/auction?role=buyer');
     expect(screen.getByText(/Следующую ставку можно сделать от/)).toBeVisible();
     expect(screen.getByText('Приём ставок', { exact: true })).toBeVisible();
-    expect(screen.getByRole('heading', { name: 'Как устроен аукцион' })).toBeVisible();
-    expect(screen.getByText('Дождитесь итогов')).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Аукцион без скрытых условий' })).toBeVisible();
+    expect(screen.queryByRole('heading', { name: 'Как это работает' })).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Подробнее об аукционе' }));
+    expect(screen.getByRole('heading', { name: 'Как это работает' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'В чём преимущество' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Кому подходит' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Скрыть подробности' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
   });
 
   it('animates the favorite control when a buyer saves the listing', async () => {
