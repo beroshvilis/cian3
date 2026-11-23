@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Аукцион квартиры · Циан</title>
+  <link rel="stylesheet" href="brand/brand.css">
+  <link rel="stylesheet" href="base.css">
+  <script src="plan.js"></script>
+  <script src="cues.js"></script>
+  <script src="tmap.js"></script>
+  <script src="engine.js"></script>
+  <style>
+    #frame{background:#f3f5fa}
+    #app{background:transparent;box-shadow:none;border-radius:0;overflow:visible}
+    #app2{overflow:visible}
+    .halo{position:absolute;left:810px;top:100px;width:1000px;height:890px;border-radius:90px;background:#e6f0ff}
+    .wordmark{position:absolute;left:132px;top:96px;width:176px;height:44px}
+    .wordmark img{width:176px;height:44px}
+    .rule{position:absolute;left:132px;top:188px;width:1656px;height:1px;background:#d0d8e9}
+    .copy{position:absolute;left:132px;top:333px;width:775px;transform-origin:0 50%}
+    .kicker{font-size:26px;line-height:34px;color:var(--ink2);font-weight:600;margin-bottom:24px}
+    h1{font-size:102px;line-height:1.04;letter-spacing:-4.3px;font-weight:700}
+    .money{font-size:88px;letter-spacing:-3.6px;white-space:nowrap}
+    .step{font-size:44px;line-height:1.2;font-weight:600;margin-top:40px;letter-spacing:-1px}
+    .step small{display:block;color:var(--ink2);font-size:25px;font-weight:400;letter-spacing:0;margin-top:10px}
+    .final-title{font-size:87px;line-height:1.08;letter-spacing:-3.5px}
+    .final-product{display:block;color:var(--accent);margin-top:18px;font-size:40px;letter-spacing:-1px}
+    .crop{position:absolute;overflow:hidden;background:#fff;box-shadow:0 30px 75px -22px #0d162e30,0 0 0 1px #d0d8e9;transform-origin:50% 50%}
+    .crop img{position:absolute;max-width:none;display:block;pointer-events:none}
+    #listing{left:1010px;top:244px;width:760px;height:577px;border-radius:40px}
+    #terms{left:996px;top:292px;width:790px;height:490.28px;border-radius:30px}
+    #bid,#pending{left:996px;top:307px;width:790px;height:460.5px;border-radius:30px}
+    #accepted{left:996px;top:324px;width:790px;height:436.68px;border-radius:30px}
+    #buttonTarget{position:absolute;left:31.76px;top:361.26px;width:726.48px;height:87.34px;pointer-events:none}
+    .footer{position:absolute;left:132px;right:132px;bottom:75px;display:flex;justify-content:space-between;align-items:center;color:var(--ink2);font-size:20px;letter-spacing:.1px}
+    .progress{display:flex;gap:10px}
+    .progress span{display:block;width:64px;height:4px;border-radius:2px;background:#d0d8e9;overflow:hidden}
+    .progress i{display:block;height:100%;width:0;background:var(--accent)}
+    #cursor{position:absolute;left:0;top:0;width:44px;height:44px;z-index:80;transform-origin:6px 4px;filter:drop-shadow(0 3px 4px #0d162e40)}
+    .rip{position:absolute;width:46px;height:46px;margin:-23px;border:3px solid var(--accent);border-radius:50%;z-index:79}
+  </style>
+</head>
+<body>
+<div id="frame">
+  <div class="layer" id="stage">
+    <div id="app">
+      <div class="halo" id="halo"></div>
+      <div class="wordmark"><img src="brand/logos/wordmark.svg" alt="Циан"></div>
+      <div class="rule"></div>
+      <section class="copy" id="copyIntro"><div class="kicker">Аукцион квартиры</div><h1>Квартира<br>на аукционе</h1></section>
+      <section class="copy" id="copyTerms"><div class="kicker">Текущая ставка</div><h1 class="money">18 800 000 ₽</h1><div class="step">+ 100 000 ₽<small>Минимальный шаг</small></div></section>
+      <section class="copy" id="copyBid"><div class="kicker">Ваша ставка</div><h1>Сделать<br>ставку</h1><div class="step">18 900 000 ₽</div></section>
+      <section class="copy" id="copyFinal"><h1 class="final-title">Аукцион<br>квартиры<span class="final-product">Циан</span></h1></section>
+      <div class="crop" id="listing"><img src="assets/form.png" alt="Карточка квартиры: аукцион"></div>
+      <div class="crop" id="terms"><img src="assets/form.png" alt="Реальные условия аукциона"></div>
+      <div class="crop" id="bid"><img src="assets/form.png" alt="Реальная форма ставки"><div id="buttonTarget"></div></div>
+      <div class="crop" id="pending"><img src="assets/pending.png" alt="Отправляем ставку"></div>
+      <div class="crop" id="accepted"><img src="assets/accepted.png" alt="Ваша ставка принята"></div>
+      <div class="footer"><span>Аукцион квартиры · Циан</span><div class="progress"><span><i id="progress1"></i></span><span><i id="progress2"></i></span><span><i id="progress3"></i></span></div></div>
+    </div>
+  </div>
+  <div class="layer" id="stage2"><div id="app2"></div></div>
+</div>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const rects = {
+    listing: {x:0,y:0,w:440,h:334,out:760},
+    terms: {x:21,y:334,w:398,h:247,out:790},
+    bid: {x:21,y:825,w:398,h:232,out:790},
+    pending: {x:21,y:825,w:398,h:232,out:790},
+    accepted: {x:21,y:825,w:398,h:220,out:790}
+  };
+  function opacity(E,t,start,end,first=false){
+    return (first ? 1 : E.eout(E.lin(t,start,start+.42))) * (1-E.eio(E.lin(t,end-.32,end)));
+  }
+  function place(E,id,alpha,scale=1,y=0){
+    E.css($(id),{opacity:alpha,transform:`translateY(${y}px) scale(${scale})`,visibility:alpha>0?'visible':'hidden'});
+  }
+  E.start({
+    build(){
+      Object.entries(rects).forEach(([id,r])=>{
+        const image=$(id).querySelector('img'), scale=r.out/r.w;
+        Object.assign(image.style,{width:`${440*scale}px`,left:`${-r.x*scale}px`,top:`${-r.y*scale}px`});
+      });
+    },
+    setup(E){
+      E.measureAt(9.65);
+      const button=E.rect('buttonTarget');
+      E.camera([[0,960,540,1]],[[0,960,540,1]]);
+      E.cursor([
+        [0,button.cx+95,button.cy+90,0],
+        [8.6,button.cx+95,button.cy+90,0],
+        [9.25,button.cx,button.cy,1],
+        [9.9,button.cx,button.cy,1],
+        [10.25,button.cx+75,button.cy+65,0],
+        [15,button.cx+75,button.cy+65,0]
+      ]);
+      E.clicks([9.65]);
+    },
+    scene(t,E){
+      const a=opacity(E,t,0,3.2,true), b=opacity(E,t,2.8,6.2);
+      const c=opacity(E,t,5.8,11.45), d=E.eout(E.lin(t,11.05,11.5));
+      place(E,'copyIntro',a,1,12*(1-a));
+      place(E,'copyTerms',b,1,12*(1-b));
+      place(E,'copyBid',c,1,12*(1-c));
+      place(E,'copyFinal',d,1,12*(1-d));
+      place(E,'listing',a,1+.018*E.eio(E.lin(t,0,2.6)),0);
+      place(E,'terms',b,1+.012*E.lin(t,3.3,5.6),16*(1-b));
+      const formScale=1+.012*E.lin(t,6.2,9.65);
+      const pending=t>=9.7&&t<10.55;
+      const before=t<10.55;
+      place(E,'bid',before&&!pending?c:0,formScale,16*(1-c));
+      place(E,'pending',pending?c:0,formScale,16*(1-c));
+      const success=E.eout(E.lin(t,10.55,10.88));
+      place(E,'accepted',success,1,14*(1-success));
+      $('halo').style.transform=`translateX(${16*E.eio(E.lin(t,0,13.4))}px)`;
+      $('progress1').style.width=`${100*E.lin(t,0,3)}%`;
+      $('progress2').style.width=`${100*E.lin(t,3,6)}%`;
+      $('progress3').style.width=`${100*E.lin(t,6,13.4)}%`;
+    }
+  });
+})();
+</script>
+</body>
+</html>

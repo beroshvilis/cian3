@@ -1,0 +1,129 @@
+{
+  "form": {
+    "width": 440,
+    "height": 1176,
+    "gallery": {
+      "x": 1,
+      "y": 1,
+      "w": 438,
+      "h": 231
+    },
+    "summary": {
+      "x": 21,
+      "y": 334,
+      "w": 398,
+      "h": 247
+    },
+    "form": {
+      "x": 21,
+      "y": 825,
+      "w": 398,
+      "h": 276
+    },
+    "input": {
+      "x": 50,
+      "y": 960,
+      "w": 340,
+      "h": 22
+    },
+    "button": {
+      "x": 37,
+      "y": 1007,
+      "w": 366,
+      "h": 44
+    },
+    "accepted": null,
+    "tokens": {
+      "control-main-primary-default": "#006cfd",
+      "text-primary-default": "#0d162e",
+      "text-secondary-default": "#697797",
+      "background-primary": "#ffffff",
+      "background-secondary": "#f3f5fa",
+      "surface-main-default": "#e6f0ff",
+      "stroke-divider-default": "#d0d8e9"
+    }
+  },
+  "pending": {
+    "width": 440,
+    "height": 1176,
+    "gallery": {
+      "x": 1,
+      "y": 1,
+      "w": 438,
+      "h": 231
+    },
+    "summary": {
+      "x": 21,
+      "y": 334,
+      "w": 398,
+      "h": 247
+    },
+    "form": {
+      "x": 21,
+      "y": 825,
+      "w": 398,
+      "h": 276
+    },
+    "input": {
+      "x": 50,
+      "y": 960,
+      "w": 340,
+      "h": 22
+    },
+    "button": {
+      "x": 37,
+      "y": 1007,
+      "w": 366,
+      "h": 44
+    },
+    "accepted": {
+      "x": 129.90625,
+      "y": 1020,
+      "w": 18,
+      "h": 18
+    },
+    "tokens": {
+      "control-main-primary-default": "#006cfd",
+      "text-primary-default": "#0d162e",
+      "text-secondary-default": "#697797",
+      "background-primary": "#ffffff",
+      "background-secondary": "#f3f5fa",
+      "surface-main-default": "#e6f0ff",
+      "stroke-divider-default": "#d0d8e9"
+    }
+  },
+  "accepted": {
+    "width": 440,
+    "height": 1120,
+    "gallery": {
+      "x": 1,
+      "y": 1,
+      "w": 438,
+      "h": 231
+    },
+    "summary": {
+      "x": 21,
+      "y": 334,
+      "w": 398,
+      "h": 247
+    },
+    "form": null,
+    "input": null,
+    "button": null,
+    "accepted": {
+      "x": 21,
+      "y": 825,
+      "w": 398,
+      "h": 220
+    },
+    "tokens": {
+      "control-main-primary-default": "#006cfd",
+      "text-primary-default": "#0d162e",
+      "text-secondary-default": "#697797",
+      "background-primary": "#ffffff",
+      "background-secondary": "#f3f5fa",
+      "surface-main-default": "#e6f0ff",
+      "stroke-divider-default": "#d0d8e9"
+    }
+  }
+}
