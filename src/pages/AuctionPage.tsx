@@ -71,13 +71,20 @@ function AuctionSummary({ compact = false }: { compact?: boolean }) {
           </div>
         )}
       </div>
+      {!compact && (
+        <p className={s.nextBid}>
+          Следующую ставку можно сделать от <strong>{money(currentPrice + increment)}</strong>
+        </p>
+      )}
       <div className={s.auctionFacts}>
-        <span>
-          <b>Шаг</b> {money(increment)}
-        </span>
-        <span>
-          <b>До</b> завтра, 18:00
-        </span>
+        <div>
+          <b>Минимальный шаг</b>
+          <span>+ {money(increment)}</span>
+        </div>
+        <div>
+          <b>Приём ставок</b>
+          <span>до завтра, 18:00</span>
+        </div>
       </div>
     </section>
   );
@@ -317,11 +324,29 @@ function BuyerFlow({
         </section>
       )}
       <section className={s.rules}>
-        <h2>Как проходит аукцион</h2>
+        <h2>Как устроен аукцион</h2>
         <ol>
-          <li>Вы делаете ставку. Она отображается только вам и продавцу.</li>
-          <li>Если ставку перебьют, пришлём уведомление.</li>
-          <li>После окончания продавец выбирает покупателя.</li>
+          <li>
+            <span>1</span>
+            <div>
+              <strong>Сделайте ставку</strong>
+              <p>Не ниже {money(minimum)}. Её увидите вы и продавец.</p>
+            </div>
+          </li>
+          <li>
+            <span>2</span>
+            <div>
+              <strong>Следите за ходом аукциона</strong>
+              <p>Если вашу ставку перебьют, мы отправим уведомление.</p>
+            </div>
+          </li>
+          <li>
+            <span>3</span>
+            <div>
+              <strong>Дождитесь итогов</strong>
+              <p>Завтра в 18:00 приём ставок закончится, и продавец выберет покупателя.</p>
+            </div>
+          </li>
         </ol>
       </section>
       <Link
