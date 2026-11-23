@@ -7,6 +7,7 @@ import s from './AuctionPage.module.css';
 
 type SellerStep = 'form' | 'review' | 'published';
 type BidState = 'form' | 'pending' | 'accepted' | 'error';
+type Role = 'seller' | 'buyer';
 
 const startPrice = 18_400_000;
 const increment = 100_000;
@@ -17,6 +18,35 @@ const apartmentImages = [
   '/images/apartment-3.webp',
   '/images/apartment-4.webp',
 ];
+
+function ScenarioSwitch({ role, onChange }: { role: Role; onChange: (role: Role) => void }) {
+  return (
+    <section className={s.scenarioSwitch} aria-label="Переключатель сценария">
+      <div>
+        <span className={s.scenarioEyebrow}>Панель предпросмотра</span>
+        <strong>Сценарий аукциона</strong>
+      </div>
+      <div className={s.scenarioButtons} role="group" aria-label="Роль в прототипе">
+        <button
+          type="button"
+          className={role === 'seller' ? s.scenarioActive : undefined}
+          onClick={() => onChange('seller')}
+          aria-pressed={role === 'seller'}
+        >
+          Продавец
+        </button>
+        <button
+          type="button"
+          className={role === 'buyer' ? s.scenarioActive : undefined}
+          onClick={() => onChange('buyer')}
+          aria-pressed={role === 'buyer'}
+        >
+          Покупатель
+        </button>
+      </div>
+    </section>
+  );
+}
 
 function ListingGallery({ finished = false }: { finished?: boolean }) {
   const [favorite, setFavorite] = useState(false);
@@ -153,7 +183,8 @@ function SellerFlow({
         <span className={s.progressDone}>1</span>
         <i />
         <span className={step === 'review' ? s.progressDone : undefined}>2</span>
-        <small>{step === 'form' ? 'Условия' : 'Проверка'}</small>
+        <small className={s.progressFirstLabel}>Условия</small>
+        <small className={s.progressLastLabel}>Проверка</small>
       </div>
       {step === 'form' ? (
         <form
@@ -250,6 +281,7 @@ function BuyerFlow({
   onStateChange: (state: string | null) => void;
 }) {
   const [bid, setBid] = useState(String(currentPrice + increment));
+  const [promoExpanded, setPromoExpanded] = useState(false);
   const [bidState, setBidState] = useState<BidState>(
     state === 'error' || state === 'pending' || state === 'accepted' ? state : 'form',
   );
@@ -301,6 +333,55 @@ function BuyerFlow({
         <h1>2-комн. квартира, 54 м²</h1>
         <p className={s.address}>Москва, Сокольники, ул. Русаковская, 12 · 7 минут пешком</p>
         <AuctionSummary />
+        <section className={s.auctionPromo} aria-labelledby="auction-promo-title">
+          <Badge tone="main">Покупателям</Badge>
+          <h2 id="auction-promo-title">Аукцион без скрытых условий</h2>
+          <p className={s.promoLead}>
+            Все ставки и минимальный шаг видны заранее. Вы сами решаете, до какой суммы готовы
+            участвовать.
+          </p>
+          <Button
+            className={s.promoToggle}
+            theme="main_secondary"
+            size="XS"
+            aria-expanded={promoExpanded}
+            aria-controls="auction-promo-details"
+            onClick={() => setPromoExpanded((value) => !value)}
+          >
+            {promoExpanded ? 'Скрыть подробности' : 'Подробнее об аукционе'}
+          </Button>
+          {promoExpanded && (
+            <div id="auction-promo-details" className={s.promoPoints}>
+              <section>
+                <span>1</span>
+                <div>
+                  <h3>Как это работает</h3>
+                  <p>
+                    Сделайте ставку от {money(minimum)} и следите за ходом аукциона до его
+                    окончания.
+                  </p>
+                </div>
+              </section>
+              <section>
+                <span>2</span>
+                <div>
+                  <h3>В чём преимущество</h3>
+                  <p>
+                    Цена меняется только на шаг ставки, поэтому условия одинаково понятны всем
+                    участникам.
+                  </p>
+                </div>
+              </section>
+              <section>
+                <span>3</span>
+                <div>
+                  <h3>Кому подходит</h3>
+                  <p>Тем, кто уже выбрал квартиру и готов оперативно участвовать в торгах.</p>
+                </div>
+              </section>
+            </div>
+          )}
+        </section>
         {bidState === 'accepted' ? (
           <section className={s.accepted} role="status">
             <span className={s.successMark}>✓</span>
@@ -368,32 +449,6 @@ function BuyerFlow({
             </button>
           </section>
         )}
-        <section className={s.rules}>
-          <h2>Как устроен аукцион</h2>
-          <ol>
-            <li>
-              <span>1</span>
-              <div>
-                <strong>Сделайте ставку</strong>
-                <p>Не ниже {money(minimum)}. Её увидите вы и продавец.</p>
-              </div>
-            </li>
-            <li>
-              <span>2</span>
-              <div>
-                <strong>Следите за ходом аукциона</strong>
-                <p>Если вашу ставку перебьют, мы отправим уведомление.</p>
-              </div>
-            </li>
-            <li>
-              <span>3</span>
-              <div>
-                <strong>Дождитесь итогов</strong>
-                <p>Завтра в 18:00 приём ставок закончится, и продавец выберет покупателя.</p>
-              </div>
-            </li>
-          </ol>
-        </section>
         <Link
           className={s.textLink}
           to="/auction?role=buyer&state=finished"
@@ -408,7 +463,7 @@ function BuyerFlow({
 
 export function AuctionPage() {
   const [params, setParams] = useSearchParams();
-  const role = params.get('role') === 'buyer' ? 'buyer' : 'seller';
+  const role: Role = params.get('role') === 'buyer' ? 'buyer' : 'seller';
   const state = params.get('state');
   const requestedSellerStep = params.get('step');
   const sellerStep: SellerStep =
@@ -423,6 +478,9 @@ export function AuctionPage() {
   const changeSellerStep = (next: SellerStep) => {
     setParams(next === 'form' ? {} : { role: 'seller', step: next });
   };
+  const changeRole = (next: Role) => {
+    setParams(next === 'buyer' ? { role: 'buyer' } : {});
+  };
   useEffect(() => {
     if (role !== 'buyer') return;
     if (state === 'finished') {
@@ -433,6 +491,7 @@ export function AuctionPage() {
   }, [role, state]);
   return (
     <main id="main" className={s.page}>
+      <ScenarioSwitch role={role} onChange={changeRole} />
       <div className={s.mobileShell}>
         {role === 'seller' ? (
           <SellerFlow

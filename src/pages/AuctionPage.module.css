@@ -3,6 +3,62 @@
   margin: 0 auto;
   padding: 32px 20px 56px;
 }
+.scenarioSwitch {
+  width: min(100%, 440px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-sizing: border-box;
+  margin: 0 auto 16px;
+  padding: 12px 14px;
+  border: 1px dashed var(--stroke-divider-default);
+  border-radius: 12px;
+  background: var(--background-secondary);
+}
+.scenarioSwitch > div:first-child {
+  display: grid;
+  gap: 2px;
+}
+.scenarioSwitch strong {
+  color: var(--text-primary-default);
+  font-size: 14px;
+  line-height: 18px;
+}
+.scenarioEyebrow {
+  color: var(--text-secondary-default);
+  font-size: 11px;
+  line-height: 14px;
+}
+.scenarioButtons {
+  display: flex;
+  flex: none;
+  padding: 3px;
+  border: 1px solid var(--stroke-divider-default);
+  border-radius: 9px;
+  background: var(--background-primary);
+}
+.scenarioButtons button {
+  min-height: 30px;
+  border: 0;
+  padding: 6px 9px;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-secondary-default);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.scenarioButtons button:focus-visible {
+  outline: 2px solid var(--stroke-control-focused);
+  outline-offset: 2px;
+}
+.scenarioButtons .scenarioActive {
+  color: var(--text-primary-default);
+  background: var(--background-secondary);
+  box-shadow: 0 1px 2px #0d162e1f;
+}
 .mobileShell {
   width: min(100%, 440px);
   margin: 0 auto;
@@ -40,7 +96,7 @@
 }
 .progress {
   display: grid;
-  grid-template-columns: 24px 1fr 24px;
+  grid-template-columns: 24px minmax(0, 1fr) 72px;
   align-items: center;
   gap: 8px;
   margin: 28px 0 24px;
@@ -59,9 +115,19 @@
   height: 2px;
   background: var(--stroke-divider-default);
 }
+.progress > span:last-of-type {
+  justify-self: end;
+}
 .progress small {
-  grid-column: 1 / -1;
   font-size: 12px;
+}
+.progressFirstLabel {
+  grid-column: 1;
+}
+.progressLastLabel {
+  grid-column: 3;
+  width: 100%;
+  text-align: right;
 }
 .progress .progressDone {
   background: var(--control-main-primary-default);
@@ -480,42 +546,62 @@
   font-size: 12px;
   cursor: pointer;
 }
-.rules {
-  padding: 24px 0 0;
-}
-.rules ol {
+.auctionPromo {
   display: grid;
-  gap: 12px;
-  padding: 0;
-  margin: 12px 0 0;
-  list-style: none;
+  gap: 10px;
+  margin: 0 0 24px;
+  padding: 20px;
+  border: 1px solid var(--stroke-divider-main);
+  border-radius: 16px;
+  background: var(--surface-main-default);
 }
-.rules li {
+.auctionPromo h2 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 26px;
+}
+.promoLead {
+  margin: 0;
+  color: var(--text-secondary-default);
+  font-size: 14px;
+  line-height: 20px;
+}
+.promoToggle {
+  justify-self: start;
+  margin-top: 2px;
+}
+.promoPoints {
+  display: grid;
+  gap: 14px;
+  margin-top: 4px;
+}
+.promoPoints section {
   display: grid;
   grid-template-columns: 28px 1fr;
   gap: 10px;
   align-items: start;
 }
-.rules li > span {
+.promoPoints > section > span {
   width: 28px;
   height: 28px;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--background-secondary);
+  background: var(--background-primary);
   color: var(--text-main-default);
   font-size: 13px;
   font-weight: 700;
 }
-.rules li > div {
+.promoPoints section > div {
   display: grid;
   gap: 3px;
 }
-.rules li strong {
+.promoPoints h3 {
+  margin: 0;
   font-size: 14px;
   line-height: 20px;
 }
-.rules li p {
+.promoPoints p {
   margin: 0;
   color: var(--text-secondary-default);
   font-size: 13px;
@@ -559,6 +645,11 @@
 @media (max-width: 420px) {
   .page {
     padding: 20px 0 36px;
+  }
+  .scenarioSwitch {
+    width: auto;
+    margin-right: 16px;
+    margin-left: 16px;
   }
   .mobileShell {
     border-radius: 0;

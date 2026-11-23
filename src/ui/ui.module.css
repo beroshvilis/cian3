@@ -32,12 +32,20 @@
   font-weight: 600;
 }
 .fieldControl {
+  display: flex;
   min-width: 0;
   gap: 8px;
+  border: 1px solid var(--stroke-control-default);
+  border-radius: 8px;
+  background: var(--surface-inverted-default);
 }
 .fieldControl:focus-within {
+  border-color: var(--stroke-control-selected);
   outline: 2px solid var(--stroke-control-focused);
   outline-offset: 1px;
+}
+.fieldControlError {
+  border-color: var(--stroke-border-negative);
 }
 .inputChildren {
   min-width: 0;
