@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Badge, Button, Input } from '@/ui';
+import { Badge, Button, Icon, Input } from '@/ui';
 import { money } from '@/data/listings';
 import s from './AuctionPage.module.css';
 
@@ -43,7 +43,7 @@ function ListingGallery({ finished = false }: { finished?: boolean }) {
           aria-pressed={favorite}
           onClick={() => setFavorite((value) => !value)}
         >
-          <span aria-hidden="true">{favorite ? '♥' : '♡'}</span>
+          <Icon name="Heart" size={24} />
         </button>
       )}
     </div>
