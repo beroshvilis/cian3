@@ -5,39 +5,12 @@ import { AppShell } from '@/components/Layout';
 import { money } from '@/data/listings';
 import s from './AuctionPage.module.css';
 
-type Role = 'seller' | 'buyer';
 type SellerStep = 'form' | 'review' | 'published';
 type BidState = 'form' | 'pending' | 'accepted' | 'error';
 
 const startPrice = 18_400_000;
 const increment = 100_000;
 const currentPrice = 18_800_000;
-
-function RoleSwitch({ role, onChange }: { role: Role; onChange: (role: Role) => void }) {
-  return (
-    <div className={s.roleSwitch} aria-label="Роль в прототипе">
-      <span>Я здесь как</span>
-      <div className={s.roleButtons}>
-        <button
-          type="button"
-          className={role === 'seller' ? s.roleActive : undefined}
-          onClick={() => onChange('seller')}
-          aria-pressed={role === 'seller'}
-        >
-          Продавец
-        </button>
-        <button
-          type="button"
-          className={role === 'buyer' ? s.roleActive : undefined}
-          onClick={() => onChange('buyer')}
-          aria-pressed={role === 'buyer'}
-        >
-          Покупатель
-        </button>
-      </div>
-    </div>
-  );
-}
 
 function AuctionSummary({ compact = false }: { compact?: boolean }) {
   return (
@@ -335,13 +308,8 @@ function BuyerFlow({
 
 export function AuctionPage() {
   const [params, setParams] = useSearchParams();
-  const initialRole = params.get('role') === 'buyer' ? 'buyer' : 'seller';
-  const [role, setRole] = useState<Role>(initialRole);
+  const role = params.get('role') === 'buyer' ? 'buyer' : 'seller';
   const state = params.get('state');
-  const changeRole = (next: Role) => {
-    setRole(next);
-    setParams(next === 'buyer' ? { role: 'buyer' } : {});
-  };
   const changeState = (next: string | null) => {
     const value: Record<string, string> = { role: 'buyer' };
     if (next) value.state = next;
@@ -350,10 +318,9 @@ export function AuctionPage() {
   return (
     <AppShell>
       <main id="main" className={s.page}>
-        <RoleSwitch role={role} onChange={changeRole} />
         <div className={s.mobileShell}>
           {role === 'seller' ? (
-            <SellerFlow onSwitch={() => changeRole('buyer')} />
+            <SellerFlow onSwitch={() => setParams({ role: 'buyer' })} />
           ) : (
             <BuyerFlow state={state} onStateChange={changeState} />
           )}
