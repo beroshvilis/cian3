@@ -44,4 +44,10 @@ describe('Auction scenario', () => {
     expect(screen.getAllByRole('img', { name: /Квартира, фото/ })).toHaveLength(4);
     expect(screen.getByText('4 фото')).toBeVisible();
   });
+
+  it('keeps the auction flow free of the common site header and footer', () => {
+    open();
+    expect(screen.queryByRole('banner')).not.toBeInTheDocument();
+    expect(screen.queryByRole('contentinfo')).not.toBeInTheDocument();
+  });
 });

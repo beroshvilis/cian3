@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Badge, Button, Input } from '@/ui';
-import { AppShell } from '@/components/Layout';
 import { money } from '@/data/listings';
 import s from './AuctionPage.module.css';
 
@@ -339,19 +338,17 @@ export function AuctionPage() {
     setParams(value);
   };
   return (
-    <AppShell>
-      <main id="main" className={s.page}>
-        <div className={s.mobileShell}>
-          {role === 'seller' ? (
-            <SellerFlow onSwitch={() => setParams({ role: 'buyer' })} />
-          ) : (
-            <BuyerFlow state={state} onStateChange={changeState} />
-          )}
-        </div>
-        <p className={s.demoNote}>
-          Учебный прототип: оплата и юридическое оформление не входят в сценарий.
-        </p>
-      </main>
-    </AppShell>
+    <main id="main" className={s.page}>
+      <div className={s.mobileShell}>
+        {role === 'seller' ? (
+          <SellerFlow onSwitch={() => setParams({ role: 'buyer' })} />
+        ) : (
+          <BuyerFlow state={state} onStateChange={changeState} />
+        )}
+      </div>
+      <p className={s.demoNote}>
+        Учебный прототип: оплата и юридическое оформление не входят в сценарий.
+      </p>
+    </main>
   );
 }
